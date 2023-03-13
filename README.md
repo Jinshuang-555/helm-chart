@@ -30,6 +30,16 @@ helm install app1 appchart
 helm list -a
 kubectl get all
 
+export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=appchart,app.kubernetes.io/instance=app1" -o jsonpath="{.items[0].metadata.name}")
+
+kubectl describe pod $POD_NAME
+kubectl logs $POD_NAME -c init-container
+kubectl logs $POD_NAME -c appchart
+
+export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+echo "Visit http://127.0.0.1:8080 to use your application"
+kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+
 8. upgrade application helm chart
 
 change version 0.1.0 -> 0.1.1 // chart.yaml
@@ -51,7 +61,7 @@ kubectl get all
 
 10. delete helm release
 
-helm delete app1.0 (release name)
+helm delete app1 (release name)
 
 
 

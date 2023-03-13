@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# docker pull jinshuangniu/advanced1cloud1computing:test-app-1.0
+# docker pull jinshuangniu/advanced1cloud1computing:test-app-2.0
 
 replicaCount: 1
 
@@ -10,7 +10,11 @@ image:
   repository: jinshuangniu/advanced1cloud1computing
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "test-app-1.0"
+  tag: "test-app-2.0"
+
+initContainer:
+  name: init-container
+  image: jinshuangniu/advanced1cloud1computing:db.01
 
 imagePullSecrets: []
 nameOverride: ""
