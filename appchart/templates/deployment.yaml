@@ -27,6 +27,11 @@ spec:
       serviceAccountName: {{ include "appchart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: {{ .Values.initContainer.name }}
+          image: {{ .Values.initContainer.image }}
+          restartPolicy: never
+          imagePullPolicy: Always
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
