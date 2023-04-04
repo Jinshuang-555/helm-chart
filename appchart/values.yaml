@@ -6,15 +6,23 @@
 
 replicaCount: 1
 
-image:
+image1:
   repository: jinshuangniu/advanced1cloud1computing
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "test-app-2.0"
+  tag: "app-1679954271"
+
+
+image2:
+  repository: jinshuangniu/advanced1cloud1computing
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "search-1680548982"
+
 
 initContainer:
   name: init-container
-  image: jinshuangniu/advanced1cloud1computing:db.01
+  image: jinshuangniu/advanced1cloud1computing:db-1679003872
 
 imagePullSecrets: []
 nameOverride: ""
@@ -42,9 +50,13 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-service:
+serviceApp:
   type: ClusterIP
   port: 8080
+
+serviceSearch:
+  type: ClusterIP
+  port: 8082
 
 ingress:
   enabled: false

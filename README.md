@@ -25,7 +25,17 @@ helm install appchart --debug --dry-run appchart
 
 6. helm intsall releasename chartname
 
+// ---- pass value file into helm install -------
+
+hell install -f myvals.yaml ./mychart
+
+// ----- individual paramenters passed with ---------
+
+hell install --set elasticsearchHosts=http://localhost:9200"
+
 helm install app1 appchart
+
+helm install appstest
 
 helm list -a
 kubectl get all
@@ -35,6 +45,9 @@ export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/nam
 kubectl describe pod $POD_NAME
 kubectl logs $POD_NAME -c init-container
 kubectl logs $POD_NAME -c appchart
+kubectl logs $POD_NAME -c appchart-search
+
+kubectl get svc release-name-appchart
 
 export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
 echo "Visit http://127.0.0.1:8080 to use your application"
@@ -59,10 +72,11 @@ helm rollback app1 1
 helm list -a
 kubectl get all 
 
+kubectl get services
+
 10. delete helm release
 
 helm delete app1 (release name)
-
 
 
 

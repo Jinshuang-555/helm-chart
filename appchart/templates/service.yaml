@@ -5,11 +5,15 @@ metadata:
   labels:
     {{- include "appchart.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.serviceApp.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.serviceApp.port }}
       targetPort: http
       protocol: TCP
-      name: http
+      name: app
+    - port: {{ .Values.serviceSearch.port }}
+      targetPort: http
+      protocol: TCP
+      name: search
   selector:
     {{- include "appchart.selectorLabels" . | nindent 4 }}

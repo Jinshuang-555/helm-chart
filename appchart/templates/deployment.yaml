@@ -36,20 +36,40 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag}}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.image1.repository }}:{{ .Values.image1.tag}}"
+          imagePullPolicy: {{ .Values.image1.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.serviceApp.port }}
+              protocol: TCP
+
+        - name: {{ .Chart.Name }}-search
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image2.repository }}:{{ .Values.image2.tag}}"
+          imagePullPolicy: {{ .Values.image2.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.serviceSearch.port }}
               protocol: TCP
           # livenessProbe:
           #   httpGet:
           #     path: /
           #     port: http
+              # initialDelaySeconds: 5
+              # timeoutSeconds: 2
+              # periodSeconds: 5
+              # successThreshold: 1
+              # failureThreshold: 3
           # readinessProbe:
           #   httpGet:
           #     path: /
           #     port: http
+              # initialDelaySeconds: 5
+              # timeoutSeconds: 2
+              # periodSeconds: 5
+              # successThreshold: 1
+              # failureThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
