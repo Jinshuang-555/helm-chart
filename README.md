@@ -78,6 +78,9 @@ kubectl get services
 
 helm delete app1 (release name)
 
+kubectl port-forward service/app1-appchart 8081:8081
+kubectl port-forward app1-appchart-5b545d889b-7j9ch 8082:8082
+
 
 
 
