@@ -33,7 +33,7 @@ hell install -f myvals.yaml ./mychart
 
 hell install --set elasticsearchHosts=http://localhost:9200"
 
-helm install app1 appchart
+helm install app1 appchart --namespace istio-system
 
 helm install appstest
 
@@ -42,10 +42,12 @@ kubectl get all
 
 export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=appchart,app.kubernetes.io/instance=app1" -o jsonpath="{.items[0].metadata.name}")
 
-kubectl describe pod $POD_NAME
-kubectl logs $POD_NAME -c init-container
-kubectl logs $POD_NAME -c appchart
-kubectl logs $POD_NAME -c appchart-search
+POD_NAME=app1-appchart-847b578cf8-8z5bm
+
+kubectl describe pod $POD_NAME --namespace istio-system
+kubectl logs $POD_NAME -c init-container --namespace istio-system
+kubectl logs $POD_NAME -c appchart  --namespace istio-system
+kubectl logs $POD_NAME -c appchart-search  --namespace istio-system
 
 kubectl get svc release-name-appchart
 
@@ -84,3 +86,7 @@ kubectl port-forward app1-appchart-5b545d889b-7j9ch 8082:8082
 
 
 
+kubectl logs $POD_NAME -c istio-proxy
+
+
+kops edit ig $NAME --yes

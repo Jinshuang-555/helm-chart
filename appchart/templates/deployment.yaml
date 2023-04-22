@@ -42,7 +42,8 @@ spec:
             - name: http
               containerPort: {{ .Values.serviceApp.port }}
               protocol: TCP
-
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
         - name: {{ .Chart.Name }}-search
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
