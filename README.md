@@ -33,7 +33,7 @@ hell install -f myvals.yaml ./mychart
 
 hell install --set elasticsearchHosts=http://localhost:9200"
 
-helm install app1 appchart --namespace istio-system
+helm install app1 appchart
 
 helm install appstest
 
@@ -42,12 +42,12 @@ kubectl get all
 
 export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=appchart,app.kubernetes.io/instance=app1" -o jsonpath="{.items[0].metadata.name}")
 
-POD_NAME=app1-appchart-847b578cf8-8z5bm
+POD_NAME=app1-appchart-5c65bdfd45-ktc7l 
 
-kubectl describe pod $POD_NAME --namespace istio-system
-kubectl logs $POD_NAME -c init-container --namespace istio-system
-kubectl logs $POD_NAME -c appchart  --namespace istio-system
-kubectl logs $POD_NAME -c appchart-search  --namespace istio-system
+kubectl describe pod $POD_NAME 
+kubectl logs $POD_NAME -c init-container 
+kubectl logs $POD_NAME -c appchart 
+kubectl logs $POD_NAME -c appchart-search 
 
 kubectl get svc release-name-appchart
 
@@ -60,7 +60,7 @@ kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
 change version 0.1.0 -> 0.1.1 // chart.yaml
 change the replica 1 -> 2 // values.yaml
 
-helm upgrade app1 appchart
+helm upgrade app1 appchart --set image1.tag=app-1682711158
 
 helm list -a
 kubectl get all 
@@ -84,9 +84,10 @@ kubectl port-forward service/app1-appchart 8081:8081
 kubectl port-forward app1-appchart-5b545d889b-7j9ch 8082:8082
 
 
-
-
 kubectl logs $POD_NAME -c istio-proxy
 
 
-kops edit ig $NAME --yes
+  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=searchchart,app.kubernetes.io/instance=search1" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+
+  kubectl exec -it $POD_NAME -- /bin/sh
